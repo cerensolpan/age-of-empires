@@ -10,26 +10,28 @@
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
+  font-family: "New Tegomin", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  height: 97vh;
 }
 
 #nav {
-  padding: 30px;
+  padding: 20px;
   display: flex;
   justify-content: flex-end;
 }
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #6f8f8a;
   margin-right: 20px;
+  text-decoration: none !important;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #0089ba;
 }
 </style>

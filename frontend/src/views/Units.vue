@@ -67,7 +67,6 @@ export default {
     ...mapActions(["fetchUnits"]),
     changeFilter(filter) {
       this.$store.state.currentFilter = filter;
-      console.log(this.currentFilter);
     },
   },
   created() {
@@ -78,9 +77,9 @@ export default {
 
 <template>
   <div class="units">
-    <h1>Units Page</h1>
-    <div class="age">
-      <div>
+    <h2>Units Page</h2>
+    <div class="filter">
+      <div class="age">
         <button
           v-for="(entry, index) in filterAge"
           :item="entry"
@@ -91,76 +90,97 @@ export default {
           {{ entry }}
         </button>
       </div>
-      <button @click="fetchUnits()">bas</button>
+      <div class="costs">
+        <span>Costs</span>
+        <div>
+          <input type="checkbox" id="wood" v-model="isWoodCheckbox" />
+          <label for="wood">Wood</label>
+          <input
+            id="volume-control"
+            type="range"
+            min="0"
+            max="200"
+            value="0"
+            :disabled="!isWoodCheckbox"
+            v-model="updateWood"
+          />
+          <span>{{ wood }}</span>
+        </div>
+        <div>
+          <input type="checkbox" id="food" v-model="isFoodCheckbox" />
+          <label for="food">Food</label>
+          <input
+            id="volume-control"
+            type="range"
+            min="0"
+            max="200"
+            value="0"
+            :disabled="!isFoodCheckbox"
+            v-model="updateFood"
+          />
+          <span>{{ food }}</span>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="gold"
+            value="Gold"
+            v-model="isGoldCheckbox"
+          />
+          <label for="wood">Gold</label>
+          <input
+            id="volume-control"
+            type="range"
+            min="0"
+            max="200"
+            value="0"
+            :disabled="!isGoldCheckbox"
+            v-model="updateGold"
+          />
+          <span>{{ gold }}</span>
+        </div>
+      </div>
+
+      <div class="filter-button">
+        <button @click="fetchUnits()" style="background-color:#242b3b">
+          Filter
+        </button>
+      </div>
     </div>
 
-    <div class="costs">
-      <span>Costs</span>
-      <div>
-        <input type="checkbox" id="wood" v-model="isWoodCheckbox" />
-        <label for="wood">Wood</label>
-        <input
-          id="volume-control"
-          type="range"
-          min="0"
-          max="200"
-          value="0"
-          v-model="updateWood"
-        />
-        <span>{{ wood }}</span>
-      </div>
-      <div>
-        <input type="checkbox" id="food" v-model="isFoodCheckbox" />
-        <label for="food">Food</label>
-        <input
-          id="volume-control"
-          type="range"
-          min="0"
-          max="200"
-          value="0"
-          v-model="updateFood"
-        />
-        <span>{{ food }}</span>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          id="gold"
-          value="Gold"
-          v-model="isGoldCheckbox"
-        />
-        <label for="wood">Gold</label>
-        <input
-          id="volume-control"
-          type="range"
-          min="0"
-          max="200"
-          value="0"
-          v-model="updateGold"
-        />
-        <span>{{ gold }}</span>
-      </div>
-      <table class="tableList" style="width:100%">
-        <tr>
-          <th>id</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Costs</th>
-        </tr>
-        <tr v-for="unit in units" :item="unit" :key="unit.id" class="unit">
-          <td>{{ unit.id }}</td>
-          <td>{{ unit.name }}</td>
-          <td>{{ unit.age }}</td>
-          <td>{{ unit.cost }}</td>
-        </tr>
-      </table>
-    </div>
+    <table class="tableList" style="width:100%">
+      <tr>
+        <th>id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Costs</th>
+      </tr>
+      <tr v-for="unit in units" :item="unit" :key="unit.id" class="unit">
+        <td>{{ unit.id }}</td>
+        <td>{{ unit.name }}</td>
+        <td>{{ unit.age }}</td>
+        <td>
+          <span v-if="unit.cost && unit.cost.Wood"
+            >Wood: {{ unit.cost.Wood }}</span
+          >
+          <span v-if="unit.cost && unit.cost.Food"
+            >Food: {{ unit.cost.Food }}</span
+          >
+          <span v-if="unit.cost && unit.cost.Gold"
+            >Gold: {{ unit.cost.Gold }}</span
+          >
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
 <style scoped>
-img {
-  width: 50%;
+.units {
+  font-weight: bold;
+}
+h2 {
+  color: #242b3b;
 }
 button {
   background: #74b6cc;
@@ -168,34 +188,31 @@ button {
   color: #fff;
   padding: 10px;
   margin: 5px;
+  width: 70px;
+  height: 40px;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 button.active {
   background: #0089ba;
-}
-.unitWrap {
-  list-style-type: none;
-  padding: 2%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  flex-direction: row;
-}
-.unit {
-  padding: 10px;
-  margin: 1% 0;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  width: 45%;
-  text-align: left;
 }
 h2.title {
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
 }
-.language {
-  display: block;
-  font-size: 0.9rem;
+.filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.age,
+.costs,
+.filter-button {
+  margin-bottom: 10px;
+}
+label {
+  margin-right: 10px;
 }
 .tableList {
   border-collapse: collapse;
@@ -203,5 +220,12 @@ h2.title {
 .tableList th,
 .tableList td {
   border: 1px solid rgb(165, 162, 162);
+}
+th {
+  font-size: 19px;
+  color: black;
+}
+span {
+  margin-right: 10px;
 }
 </style>

@@ -47,7 +47,6 @@ export default new Vuex.Store({
       commit
     }) {
       let empireUnits = [];
-      console.log(this.state.isWood);
       if (this.state.currentFilter === 'All') {
         empireUnits = empires.units;
       } else {
@@ -56,20 +55,17 @@ export default new Vuex.Store({
 
       if (this.state.isWood) empireUnits = empireUnits.filter(unit => {
         if (unit.cost && unit.cost.Wood) {
-          console.log(unit.cost.Wood.toString(), this.state.wood);
-          return unit.cost.Wood.toString() === this.state.wood
+          return unit.cost.Wood.toString() <= this.state.wood
         }
       })
       if (this.state.isFood) empireUnits = empireUnits.filter(unit => {
         if (unit.cost && unit.cost.Food) {
-          console.log(unit.cost.Food.toString(), this.state.food);
-          return unit.cost.Food.toString() === this.state.food
+          return unit.cost.Food.toString() <= this.state.food
         }
       })
       if (this.state.isGold) empireUnits = empireUnits.filter(unit => {
         if (unit.cost && unit.cost.Gold) {
-          console.log(unit.cost.Gold.toString(), this.state.gold);
-          return unit.cost.Gold.toString() === this.state.gold
+          return unit.cost.Gold.toString() <= this.state.gold
         }
       })
       console.log(empireUnits)
